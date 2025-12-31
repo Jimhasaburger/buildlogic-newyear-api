@@ -1,0 +1,12 @@
+{
+  "name": "buildlogic-newyear-api",
+  "version": "1.0.0",
+  "description": "New Year countdown API for Build Logic HTTP Transmitters",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
