@@ -1,4 +1,5 @@
 import express from "express";
+import { DateTime } from "luxon"; // Import luxon to handle time zone properly
 
 const app = express();
 
@@ -15,16 +16,12 @@ function toTwoDigitBCD(num) {
 }
 
 app.get("/newyear", (req, res) => {
-  const now = new Date();
+  // Get Berlin time (adjusts for daylight savings automatically)
+  const berlinTime = DateTime.now().setZone('Europe/Berlin'); // Use Berlin time
 
-  // Convert to Berlin time (UTC+1)
-  const berlinOffset = now.getTimezoneOffset() * 60000;
-  const utc = now.getTime() + berlinOffset;
-  const berlinTime = new Date(utc + 3600000 * 1);
-
-  // Next year midnight
-  const nextYear = berlinTime.getFullYear() + 1;
-  const target = new Date(`${nextYear}-01-01T00:00:00+01:00`);
+  // Calculate time difference to next year midnight (local Berlin time)
+  const nextYear = berlinTime.year + 1;
+  const target = DateTime.fromISO(`${nextYear}-01-01T00:00:00`, { zone: 'Europe/Berlin' });  // New Year's at midnight (Berlin time)
   const diff = Math.max(0, target - berlinTime);
 
   const totalSeconds = Math.floor(diff / 1000);
